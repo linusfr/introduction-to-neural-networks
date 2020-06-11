@@ -17,15 +17,20 @@ function linearRegression() {
         ySum += vector.y
     })
 
-    sumX = data.reduce((prev, curr) => {
-        console.log(prev)
-        console.log(curr)
-        prev + curr.x
-    })
-
-    console.log(sumX)
     let xMean = xSum / data.length
     let yMean = ySum / data.length
+
+    let enumerator = 0
+    let denominator = 0
+
+    data.forEach((vector) => {
+        enumerator += (vector.x - xMean) * (vector.y - yMean)
+        denominator += (vector.x - xMean) ** 2
+    })
+
+    m = enumerator / denominator
+
+    b = yMean - m * xMean
 }
 
 function drawLine() {
@@ -63,10 +68,9 @@ function draw() {
         stroke(255)
         ellipse(x, y, 8, 8)
     })
-    try {
+
+    if (data.length > 1) {
         linearRegression()
-    } catch (e) {
-        console.log(e)
+        drawLine()
     }
-    drawLine()
 }
