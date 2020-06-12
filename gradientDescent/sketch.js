@@ -1,6 +1,6 @@
 let data = []
 
-let m = 1
+let m = 0
 let b = 0
 
 function setup() {
@@ -8,29 +8,20 @@ function setup() {
     background(51)
 }
 
-function linearRegression() {
-    let xSum = 0
-    let ySum = 0
+function gradientDescent() {
+    const learning_rate = 0.2
 
     data.forEach((vector) => {
-        xSum += vector.x
-        ySum += vector.y
+        let y = vector.y
+        let x = vector.x
+
+        let guess = m * x + b
+
+        let error = y - guess
+
+        m = m + error * x * learning_rate
+        b = b + error * learning_rate
     })
-
-    let xMean = xSum / data.length
-    let yMean = ySum / data.length
-
-    let enumerator = 0
-    let denominator = 0
-
-    data.forEach((vector) => {
-        enumerator += (vector.x - xMean) * (vector.y - yMean)
-        denominator += (vector.x - xMean) ** 2
-    })
-
-    m = enumerator / denominator
-
-    b = yMean - m * xMean
 }
 
 function drawLine() {
@@ -70,7 +61,7 @@ function draw() {
     })
 
     if (data.length > 1) {
-        linearRegression()
+        gradientDescent()
         drawLine()
     }
 }
